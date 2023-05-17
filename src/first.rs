@@ -23,15 +23,12 @@ impl List {
         self.head = Some(new_node); //using Option<Box<ListNode>> instead of having an enum 
     }
     pub fn pop(&mut self) -> Option<i32> {
-        match self.head.take() { //instead of using mem::replace(self.head, None)
-            None => None,
-            Some(node) => {
-                
-                self.head = node.next; 
-                Some(node.elem)
-            }
-        }
+        self.head.take().map(|node| { //usuing a closure, they can refer to local variables outside of the closure
+            self.head = node.next;
+            node.elem
+        })
     }
+    
 }
 
 impl Drop for List {
