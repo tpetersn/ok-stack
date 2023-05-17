@@ -1,15 +1,15 @@
 use std::mem;
 
-pub struct List {
-    head: Link,
+pub struct List<T> {
+    head: Link<T>,
 }
 
-type Link = Option<Box<ListNode>>;
+type Link<T> = Option<Box<ListNode>>;
 
-struct Node {
-    elem: i32,
-    next: Link,
-}
+struct Node<T> {
+    elem: T,
+    next: Link<T>,
+} //making all of our types generic (List, Link and Node)
 
 impl List {
     pub fn new() -> Self {
