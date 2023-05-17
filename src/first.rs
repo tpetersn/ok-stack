@@ -4,25 +4,25 @@ pub struct List<T> {
     head: Link<T>,
 }
 
-type Link<T> = Option<Box<ListNode>>;
+type Link<T> = Option<Box<Node<T>>>;
 
 struct Node<T> {
     elem: T,
     next: Link<T>,
 } //making all of our types generic (List, Link and Node)
 
-impl List {
+impl<T> List<T> {
     pub fn new() -> Self {
         List { head: None }
     }
-    pub fn push(&mut self, elem: i32) {
+    pub fn push(&mut self, elem: T) {
         let new_node = Box::new(Node {
             elem: elem,
             next: mem::replace(&mut self.head, None),
         });                                                 
         self.head = Some(new_node); //using Option<Box<ListNode>> instead of having an enum 
     }
-    pub fn pop(&mut self) -> Option<i32> {
+    pub fn pop(&mut self) -> Option<T> {
         self.head.take().map(|node| { //usuing a closure, they can refer to local variables outside of the closure
             self.head = node.next;
             node.elem
@@ -31,7 +31,7 @@ impl List {
     
 }
 
-impl Drop for List {
+impl<T> Drop for List<T> {
     fn drop(&mut self) {
         let mut cur_link = self.head.take(); //again, instead of using mem::replace(self.head, None) 
 
